@@ -1,0 +1,11 @@
+DOVECOT_HEADER %{WORD} dovecot: %{WORD:network.protocol}-login: %{WORD:dovecot.status}:
+DOVECOT_USER user=\<%{DOVECOT_USER_OR_EMAIL:source.user.email}\>
+DOVECOT_METHOD method=%{WORD:dovecot.method}
+DOVECOT_RIP rip=%{IP:source.ip}
+DOVECOT_LIP lip=%{IP:server.ip}
+DOVECOT_FOOTER mpid=%{NUMBER:process.id}(, %{WORD:dovecot.secured})?, session=\<%{DATA:dovecot.session}\>
+DOVECOT_SECURITY_WORDS (TLS|secured)
+DOVECOT_TIMESTAMP %{MONTH}(?:\s)? %{MONTHDAY} %{TIME}
+DOVECOT_USER_OR_EMAIL (%{EMAIL_USER:source.user.name}@%{HOSTNAME:source.domain})|%{USER}
+
+EMAIL_USER [\.\+\=\-_a-zA-Z0-9]+

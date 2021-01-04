@@ -1,0 +1,22 @@
+# List of pipelines to be loaded by Logstash
+#
+# This document must be a list of dictionaries/hashes, where the keys/values are pipeline settings.
+# Default values for omitted settings are read from the `logstash.yml` file.
+# When declaring multiple pipelines, each MUST have its own `pipeline.id`.
+#
+# Example of two pipelines:
+
+# - pipeline.id: main
+#   pipeline.batch.size: 125
+#   path.config: "/etc/logstash/conf.d/main.conf"
+   
+ - pipeline.id: exim-pipeline
+   pipeline.batch.size: 125
+   queue.type: persisted
+   path.config: "/etc/logstash/conf.d/exim.conf"
+   
+ - pipeline.id: dovecot-pipeline
+   pipeline.batch.size: 125
+   queue.type: persisted
+   path.config: "/etc/logstash/conf.d/dovecot.conf"
+

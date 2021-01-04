@@ -1,0 +1,7 @@
+APACHE_ERROR_LOG \[%{APACHE_ERROR_TIME:apache.error.timestamp}\] \[(%{NOTSPACE:log.level}?):error\] \[pid %{APACHE_ERROR_PID}\] (?:\[client %{APACHE_ERROR_INTERFACE}\] ){0,1}%{GREEDYDATA:error.message} (%{PATH:event.url})?
+
+APACHE_ERROR_TIME %{DAY} %{MONTH} %{MONTHDAY} %{TIME} %{YEAR}
+#APACHE_ERROR_TIME %{DAY:apache.error.day} %{MONTH:apache.error.month} %{MONTHDAY:apache.error.monthday} %{TIME:apache.error.time} %{YEAR:apache.error.year}
+APACHE_ERROR_INTERFACE (%{IP:source.ip}:%{NUMBER:source.port})
+APACHE_ERROR_PID %{NUMBER:process.pid}
+APACHE_ERROR_VULN_FILES (xmlrpc.php)
