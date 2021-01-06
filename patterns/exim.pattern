@@ -1,12 +1,10 @@
-#====================== PARTIAL PATTERNS ======================
-
-#===== STATIC =====
+#========== STATIC ===========
 EXIM_ERROR_REASON (SSL verify error|Incorrect authentication data|no such address here|too many syntax or protocol errors|too many unrecognized commands|(S|s)ender verify defer|(S|s)ender verify fail(ed)?|no host name found for IP address|No such person at this address)
 EXIM_ACTION (rejected RCPT|dropped|rejected MAIL)
 EXIM_EXCLUDE_TERMS (Message is frozen|retry time not reached|unexpected disconnection while reading SMTP command|no immediate delivery:|another process is handling this message|Unfrozen by errmsg timer)
 
 #==========DEFAULT LOGSTASH PATTERNS==========
-EXIM_DATE %{YEAR}-%{MONTHNUM}-%{MONTHDAY} %{TIME}
+EXIM_TIMESTAMP %{YEAR}-%{MONTHNUM}-%{MONTHDAY} %{TIME}
 EXIM_MSGID [0-9A-Za-z]{6}-[0-9A-Za-z]{6}-[0-9A-Za-z]{2}
 EXIM_FLAGS (<=|[-=>*]>|[*]{2}|==)
 EXIM_PID \[%{POSINT}\]
@@ -17,9 +15,9 @@ EXIM_SUBJECT (T=%{QS:exim.mail.subject})
 EXIM_EXCLUDE_TERMS (Message is frozen|retry time not reached|unexpected disconnection while reading SMTP command|no immediate delivery:|another process is handling this message|Unfrozen by errmsg timer)
 
 EXIM_ROUTER R=%{NOTSPACE:[network][router]}
-EXIM_PROTOCOL (P=%{NOTSPACE:[network][protocol]})
+EXIM_PROTOCOL P=%{NOTSPACE:[network][protocol]}
 
- #==========CUSTOM LOGSTASH PATTERNS==========
+ #========== CUSTOM LOGSTASH PATTERNS ==========
 EXIM_SMTP_CONFIRM C=%{QS:exim.mail.confirmation}
 EXIM_TRANSPORT T=%{NOTSPACE:[network][transport]}
 EXIM_AUTH A=dovecot_(login|plain):%{EXIM_EMAIL:[exim][auth]}
@@ -27,12 +25,12 @@ EXIM_AUTH A=dovecot_(login|plain):%{EXIM_EMAIL:[exim][auth]}
 EXIM_INTERFACE (\[%{IP:[source][ip]}\]:%{NUMBER:[source][port]})
 EXIM_TLS_SUITE (X=%{NOTSPACE:tls.server.certificate_chain} CV=%{WORD:tls.server.cv})
 EXIM_SETID \(set_id=%{NOTSPACE:[source][user][id]}\)
-EXIM_HOST_INFO (H=%{NOTSPACE:[source][domain]}|(H=)?\(%{HOSTNAME:[source][domain]}\)|(H=)?%{HOSTNAME:[source][domain]})
+EXIM_HOST_INFO (H=%{HOSTNAME:[source][domain]}|(H=)?\(%{HOSTNAME:[source][domain]}\)|(H=)?%{HOSTNAME:[source][domain]})
 #EXIM_REMOTE_HOST (%{EXIM_HOST_INFO} %{EXIM_LOGIN_USER}) %{EXIM_INTERFACE}|%{EXIM_HOST_INFO} %{EXIM_INTERFACE}|%{EXIM_HOST_INFO} %{EXIM_INTERFACE} %{EXIM_TLS_SUITE}|%{EXIM_INTERFACE}|%{EXIM_HOST_INFO}|%{EXIM_LOGIN_USER})
 EXIM_REMOTE_HOST ((%{EXIM_HOST_INFO})?((\s)?%{EXIM_LOGIN_USER})?((\s)?%{EXIM_INTERFACE})?((\s)?%{EXIM_TLS_SUITE})?)
 EXIM_LOGIN_USER (\(\[%{IP:[client][ip]}\]\)|\(?%{USER:[client][user][name]}\)?|%{HOSTNAME:[client][domain]}|%{EXIM_EMAIL:[client][user][email]})
 
-#EMAIL:
+#======== EMAIL =========
 EXIM_SENDER_EMAIL ((F=)?\<?%{EXIM_EMAIL:[source][user][email]}\>?)
 EXIM_RECEIVER_EMAIL (\<?%{EXIM_EMAIL:[destination][user][email]}\>?)
 EXIM_EMAIL %{EMAIL_USER}@%{HOSTNAME}
